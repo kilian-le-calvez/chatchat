@@ -15,21 +15,22 @@ export default (callback = null) => {
 
   const connection = {
     pool,
-    query: (...args) => {
+    query: (...args : any) => {
       return pool.connect().then((client) => {
-        return client.query(...args).then((res) => {
-          client.release();
-          return res.rows;
-        });
+        console.log("Connection");
+        // return client.query(...(args as [])).then((res : any) => {
+        //   client.release();
+        //   return res.rows;
+        // });
       });
     },
   };
 
-  process.postgresql = connection;
+  // process.postgresql = connection;
 
-  if (callback) {
-    callback(connection);
-  }
+  // if (callback) {
+  //   callback(connection);
+  // }
 
   return connection;
 };
