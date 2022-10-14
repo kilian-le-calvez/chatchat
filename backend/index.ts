@@ -1,6 +1,7 @@
 const express = require('express');
+const db = require('./src/connect_postgres');
 const app = express();
-var cors = require('cors');
+const cors = require('cors');
 const http = require('http').Server(app);
 
 const io = require('socket.io')(http, {
@@ -23,8 +24,11 @@ io.on('connection', (socket: any) => {
   });
 });
 
-app.get('/', (req: any, res: any) => res.send('My first REST API!'));
+app.get('/test', async (req: any, res: any) => {
+  res.status(200).send(JSON.stringify('Test success'));
+});
 
-http.listen(PORT, () => {
+http.listen(PORT, async () => {
+  await db.connectDb();
   console.log('Listening on port ' + PORT);
 });
