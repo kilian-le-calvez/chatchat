@@ -12,15 +12,16 @@ const connectDb = async () => {
             port: process.env.PGPORT,
         });
         console.log("Connection...");
-        await pool.connect()
+        await pool.connect();
         console.log("Success");
-        // const res = await pool.query('SELECT *')
-        // console.log(res)
-        // console.log("Closing Database...");
-        // await pool.end()
-        // console.log("Database closed");
+        await pool.query(`DROP TABLE users`);
+        await pool.query(`CREATE TABLE IF NOT EXISTS users (id INT, name VARCHAR(255), last_name VARCHAR(255));`);
+        await pool.query(`INSERT INTO users (id, name, last_name) VALUES (0, 'Kilian', 'LeKilian');`);
+        const res = await pool.query(`SELECT * FROM users`);
+        console.log(res.rows);
+        await pool.end();
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 }
 
