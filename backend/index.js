@@ -1,27 +1,20 @@
 const express = require('express');
-var mysql = require("mysql");
 const app = express();
 
 app.get('/', (req, res) => res.send('My first REST API!'));
 
-var mysql = require('mysql');
+const { Client } = require('pg')
 
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "yourusername",
-  password: "yourpassword"
-});
-
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-  con.query("CREATE DATABASE mydb", function (err, result) {
-    if (err) throw err;
-    console.log("Database created");
-  });
-});
+const connectDb = async () => {
+  const client = new Client()
+  await client.connect()
+  const res = await client.query('SELECT $1::text as message', ['Hello world!'])
+  console.log(res.rows[0].message) // Hello world!
+  await client.end()
+}
 
 const port = 8000;
 app.listen(port, () => {
   console.log('Listening on port ' + port);
+  connectDb();
 });
