@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-app.get('/', (req, res) => res.send('My first REST API!'));
+app.get('/', (req: any, res: any) => res.send('My first REST API!'));
 
 const port = 8000;
 app.listen(port, () => {
