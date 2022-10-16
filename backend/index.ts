@@ -16,12 +16,16 @@ app.use(cors());
 
 io.on('connection', (socket: any) => {
   console.log(`⚡: ${socket.id} user just connected!`);
-  socket.on('chat message', (msg: any) => {
-    console.log('message: ', msg);
+  socket.on('chatMessage', (msg: any) => {
+    socket.broadcast.emit('chatMessage', msg);
   });
   socket.on('disconnect', () => {
     console.log('🔥: A user disconnected');
   });
+});
+
+app.get('/', async (req: any, res: any) => {
+  res.status(200).send(JSON.stringify('Initial root'));
 });
 
 app.get('/test', async (req: any, res: any) => {
