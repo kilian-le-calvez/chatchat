@@ -16,8 +16,9 @@ app.use(cors());
 
 io.on('connection', (socket: any) => {
   console.log(`⚡: ${socket.id} user just connected!`);
-  socket.on('chatMessage', (msg: any) => {
-    socket.broadcast.emit('chatMessage', msg);
+  socket.on('sendChat', (msg: any) => {
+    console.log('msg received', msg);
+    io.emit('receiveChat', socket.id, msg);
   });
   socket.on('disconnect', () => {
     console.log('🔥: A user disconnected');
