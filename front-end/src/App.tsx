@@ -36,18 +36,34 @@ function App() {
   };
 
   const sendMsg = () => {
+    if (input === '') return;
     socket.emit('sendChat', input);
     setInput('');
   };
 
   return (
     <Flex bg="brand.300" h="100vh" alignItems="center" justifyContent="center">
-      <Box bg="brand.500" w="400px" borderRadius="10px">
-        <Flex h="600px" bg="brand.500" borderTopRadius="10px" padding={3} overflow="hidden" direction="column-reverse">
-          {chatMessages.map((msg) => (
-            <div>
-              {msg.userId} : {msg.msg}
-            </div>
+      <Box bg="brand.500" w="400px" borderRadius="10px" boxShadow="2xl">
+        <Flex
+          h="600px"
+          bg="brand.500"
+          borderTopRadius="10px"
+          padding={3}
+          overflow="hidden"
+          flexDirection="column-reverse"
+        >
+          {chatMessages.map((chat) => (
+            <Flex mb="1rem" alignSelf={chat.userId === socket.id ? 'flex-end' : 'flex-start'}>
+              {chat.userId === socket.id ? (
+                <Box bg="brand.300" borderRadius="2xl" ml="100px" p="10px" width="fit-content">
+                  {chat.msg}
+                </Box>
+              ) : (
+                <Box bg="brand.700" borderRadius="2xl" mr="100px" p="10px">
+                  {chat.msg}
+                </Box>
+              )}
+            </Flex>
           ))}
         </Flex>
         <FormControl
